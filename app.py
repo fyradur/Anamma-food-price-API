@@ -2,25 +2,18 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import os
 import re
+import json
+import flask
+from flask import request
+
+app = flask.Flask(__name__)
 
 # instantiate a chrome options object so you can set the size and headless preference
 chrome_options = Options()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--window-size=1920x1080")
-
-# download the chrome driver from https://sites.google.com/a/chromium.org/chromedriver/downloads and put it in the
-# current directory
 chrome_driver = "./resources/chromedriver_linux64/chromedriver"
-
-# go to Google and click the I'm Feeling Lucky button
 driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=chrome_driver)
-driver.get("https://www.matspar.se/produkt/vegofars-1000-g")
-#lucky_button = driver.find_element_by_css_selector("[name=btnI]")
-#lucky_button.click()
-
-store_divs = driver.find_elements_by_class_name("_2qyvs")
-store1 = store_divs[0]
-store4 = store_divs[3]
 
 
 def get_store_name_from_div(div):
@@ -56,12 +49,37 @@ def scrape_product(driver):
               for store in stores}
     return result
 
-print(f"Amount of stores: {len(store_divs)}")
-print(f"Fourth store inner text: {store4.text}")
-print(f"Fourth store inner html: {store4.get_attribute('innerHTML')}")
-print(f"Fourth store name: {get_store_name_from_div(store4)}")
-print(f"First store price: {get_price_from_div(store1)}")
-print(f"The scraped product: {scrape_product(driver)}")
 
-# capture the screen
-#driver.get_screenshot_as_file("capture.png")
+def scrape_page(product):
+    """ Given the product, this scrapes the corresponding page and
+    returns a json where the keys are stores and the values are
+    the corresponding prices.
+    """
+    if product == "vegofars":
+        driver.get("https://www.matspar.se/produkt/vegofars-1000-g")
+        return json.dumps(scrape_product(driver))
+    elif product == "vegokorv":
+        driver.get("https://www.matspar.se/produkt/vegokorv-840-g")
+        return json.dumps(scrape_product(driver))
+    elif product == "vegobullar":
+        driver.get("https://www.matspar.se/produkt/vegobullar-900-g")
+        return json.dumps(scrape_product(driver))
+    elif product == "vegopizza":
+        driver.get("https://www.matspar.se/produkt/vegocapricciosa-350g-anamma")
+        return json.dumps(scrape_product(driver))
+    elif product == "vegodip":
+        driver.get("https://www.matspar.se/produkt/vegan-ch-se-dip-240g-frankful")
+        return json.dumps(scrape_product(driver))
+
+
+
+@app.route('/', methods=['GET'])
+def get_prices():
+    food = request.args['food']
+    try:
+        return scrape_page(food)
+    except:
+        return "something went wrong"
+
+
+#print(f"The scraped product: {scrape_page('vegodip')}")
