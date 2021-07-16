@@ -11,8 +11,12 @@ app = flask.Flask(__name__)
 # instantiate a chrome options object so you can set the size and headless preference
 chrome_options = Options()
 chrome_options.add_argument("--headless")
+chrome_options.add_argument("disable-infobars") # disabling infobars
+chrome_options.add_argument("--disable-extensions") # disabling extensions
 chrome_options.add_argument("--window-size=1920x1080")
-chrome_options.add_argument("--disable-dev-shm-usage")
+chrome_options.add_argument("--disable-dev-shm-usage") # overcome limited resource problems
+chrome_options.add_argument("--no-sandbox") #Bypass OS security model
+
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 #chrome_driver = "./resources/chromedriver_linux64/chromedriver"
 driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
