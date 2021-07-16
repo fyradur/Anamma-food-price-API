@@ -19,8 +19,8 @@ chrome_options.add_argument("--no-sandbox") #Bypass OS security model
 chrome_options.add_argument("--example-flag")
 
 chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-#chrome_driver = "./resources/chromedriver_linux64/chromedriver"
-driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=chrome_options)
+chrome_driver = os.environ.get("CHROMEDRIVER_PATH")
+driver = webdriver.Chrome(executable_path= chrome_driver, chrome_options=chrome_options)
 driver = webdriver.Chrome(chrome_options=chrome_options, executable_path=chrome_driver)
 
 
