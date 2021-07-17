@@ -1,0 +1,30 @@
+#+title: Anamma food price API
+#+description: This API is capable of delivering price data for some of Orkla's products (mainly under the subsidiary Anamma). The pricedata is scraped from the website https://www.matspar.se/ and this whole API is hosted using Flask on the cloud platform Heroku.
+* Usage
+Send a GET request to https://orkla-scrape.herokuapp.com/ specifying the argument "food" as one of the following:
+| input     | corresponding product             |
+|-----------+-----------------------------------|
+| vegofars  | Vegofärs Fryst, Anamma 840g       |
+| vegokorv  | Vegokorv, Anamma 840g             |
+| vegopizza | VegoVesuvio, Anamma 190g          |
+| vegodip   | Vegan Ch**se Ostdip Frankful 240g |
+
+The result is a JSON string with the keys being different Swedish stores and the values being the corresponding price. These are the available keys:
+- willys
+- coop
+- ica
+- hemkop
+- citygross
+- mat
+- mathem
+
+** Example
+Let's get the price of "VegoVesuvio, Anamma 190g" at the moment of writing this (17th of July 2021). 
+#+begin_src URL
+https://orkla-scrape.herokuapp.com/?food=vegopizza
+#+end_src
+
+#+RESULTS:
+#+begin_src 
+ {"willys": 36.5, "coop": 36.95, "ica": 37.9, "hemkop": 38.95, "citygross": 40.95, "mat": 42.95, "mathem": 43.95} 
+#+end_src
