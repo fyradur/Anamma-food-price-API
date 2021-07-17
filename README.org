@@ -11,7 +11,7 @@ Send a GET request to https://orkla-scrape.herokuapp.com/ specifying the argumen
 | vegopizza | VegoVesuvio, Anamma 190g          |
 | vegodip   | Vegan Ch**se Ostdip Frankful 240g |
 
-The result is a JSON string with the keys being different Swedish stores and the values being the corresponding pricec. These are the available keys:
+The result is a JSON string with the keys being different Swedish stores and the values being the corresponding prices. These are the available keys:
 - willys
 - coop
 - ica
